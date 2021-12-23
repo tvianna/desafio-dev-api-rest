@@ -7,9 +7,6 @@ import {
   Param,
   Delete,
   ParseFloatPipe,
-  Query,
-  ParseArrayPipe,
-  ParseEnumPipe,
 } from '@nestjs/common';
 import { TransacoesService } from './transacoes.service';
 import { CreateTransacoeDto } from './dto/create-transacoe.dto';
@@ -42,14 +39,19 @@ export class TransacoesController {
     return this.transacoesService.findAll();
   }
 
+  @Get('/extrato/:id')
+  extrato(@Param('id') id: string) {
+    return this.transacoesService.extrato(+id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.transacoesService.findOne(+id);
   }
 
-  @Get('/extrato/:id')
-  consultarExtrato(@Param('id') id: string, @Body() data) {
-    return this.transacoesService.consultarExtrato(
+  @Get('/extratoPeriodo/:id')
+  consultarExtratoPeriodo(@Param('id') id: string, @Body() data) {
+    return this.transacoesService.consultarExtratoPeriodo(
       +id,
       data.dtInicio,
       data.dtFim,

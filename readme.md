@@ -61,6 +61,7 @@ As tabelas e seus relacionamentos serão criados automaticamente pelo [prisma](h
   GET http://localhost:3000/contas/saldo/1
 
 - Bloquear conta (passando :id da conta)
+
   PATCH http://localhost:3000/contas/bloquear/1
 
 ## Transações
@@ -84,9 +85,14 @@ As tabelas e seus relacionamentos serão criados automaticamente pelo [prisma](h
   "valor": 10
 }
 ``` 
-- Extrato por período (passando :id da conta)
+- Extrato da conta (passando :id da conta)
 
   GET http://localhost:3000/transacoes/extrato/1
+
+
+- Extrato por período (passando :id da conta)
+
+  GET http://localhost:3000/transacoes/extratoPeriodo/1
 ```bash
 # body
 {

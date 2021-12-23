@@ -40,6 +40,22 @@ export class TransacoesService {
     }
   }
 
+  async extrato(id: number) {
+    try {
+      const transacoes = await this.prisma.$transaction([
+        this.prisma.transacoes.findMany({
+          where: {
+            idConta: id,
+          },
+        }),
+      ]);
+      return transacoes;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error, 500);
+    }
+  }
+
   async findOne(id: number) {
     try {
       const transacao = await this.prisma.$transaction([
@@ -161,7 +177,7 @@ export class TransacoesService {
     }
   }
 
-  async consultarExtrato(id: number, dtInicio: string, dtFim: string) {
+  async consultarExtratoPeriodo(id: number, dtInicio: string, dtFim: string) {
     const extrato = await this.prisma.$transaction([
       this.prisma.transacoes.findMany({
         where: {
