@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:root@dock-desafio-mysql:3306/dock-desafio-mysql"
+}
+
+model Contas {
+  idConta Int @default(autoincrement()) @id
+  pessoa Pessoas @relation("conta", fields: [idPessoa], references: [idPessoa])
+  idPessoa Int
+  saldo Decimal @db.Decimal(10,2)
+  limiteSaqueDiario Float
+  flagAtivo Boolean
+  tipoConta  Int
+  dataCriacao DateTime @default(now())
+  
+  transacoes Transacoes[] @relation("transacoes") 
+}
+
+model Transacoes {
+  idTransacao Int @default(autoincrement()) @id
+  conta Contas @relation("transacoes", fields: [idConta], references: [idConta])
+  idConta Int
+  valor Decimal @db.Decimal(10,2)
+  tipo Int
+  dataTransacao DateTime @default(now())
+
+}
+
+
+model Pessoas {
+  idPessoa Int @default(autoincrement()) @id
+  nome String
+  cpf String
+  dataNascimento DateTime
+
+  conta Contas[] @relation("conta")
+}

@@ -1,0 +1,36 @@
+version: '3.1'
+services:
+    dock-desafio-mysql:
+        image: mysql
+        cap_add:
+         - SYS_NICE  # CAP_SYS_NICE
+        container_name: dock-desafio-mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: DOCK
+            MYSQL_PASSWORD: DOCK
+            MYSQL_DATABASE: dock-desafio-mysql
+        ports:
+            - "3306:3306"
+    dev:
+        container_name: dock-api-dev
+        image: nestjs-api-dev:1.0.0
+        build:
+            context: .
+            target: development
+            dockerfile: ./Dockerfile
+        command: >
+            sh -c "npx prisma migrate dev --name init && npm
+            run start:debug"
+        ports:
+            - 3000:3000
+            - 9229:9229
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        restart: unless-stopped
+        depends_on:
+            - dock-desafio-mysql
+        links:
+            - dock-desafio-mysql
